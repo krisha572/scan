@@ -1,0 +1,36 @@
+.tracking {
+  max-width: 900px;
+  margin: 40px auto;
+  padding: 30px;
+}
+
+.tracking h1 {
+  text-align: center;
+  color: #176b4d;
+  margin-bottom: 10px;
+}
+
+.tracking > p {
+  text-align: center;
+  color: #666;
+  margin-bottom: 35px;
+}
+
+.tracking-stage {
+  background: white;
+  padding: 22px;
+  margin-bottom: 18px;
+  border-radius: 12px;
+  border-left: 6px solid #176b4d;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+}
+
+.tracking-stage h3 {
+  color: #176b4d;
+  margin-bottom: 8px;
+}
+
+.tracking-stage p {
+  color: #555;
+  margin: 0;
+}
