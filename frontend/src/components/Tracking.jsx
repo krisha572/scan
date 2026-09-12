@@ -1,113 +1,238 @@
+import { useEffect, useState } from "react";
 import "./Tracking.css";
 
 function Tracking() {
-  const batchId = "WB-2026-00001";
+  const [batches, setBatches] = useState([]);
+  const [selectedId, setSelectedId] = useState("");
+  const [selectedBatch, setSelectedBatch] = useState(null);
+
+  useEffect(() => {
+    const savedBatches =
+      JSON.parse(localStorage.getItem("wasteBatches")) || [];
+
+    setBatches(savedBatches);
+
+    if (savedBatches.length > 0) {
+      setSelectedId(savedBatches[0].id);
+      setSelectedBatch(savedBatches[0]);
+    }
+  }, []);
+
+  const handleBatchChange = (e) => {
+    const batchId = e.target.value;
+
+    setSelectedId(batchId);
+
+    const batch = batches.find(
+      (item) => item.id === batchId
+    );
+
+    setSelectedBatch(batch);
+  };
+
+  if (batches.length === 0) {
+    return (
+      <div className="tracking">
+        <h1>Waste Journey Tracking</h1>
+        <p>No waste batch available.</p>
+      </div>
+    );
+  }
 
   return (
     <div className="tracking">
       <h1>Waste Journey Tracking</h1>
 
-      <div className="batch-id">
-        <strong>Waste Batch ID:</strong> {batchId}
+      <p>Track the complete movement of the waste batch.</p>
+
+      {/* Batch Select */}
+      <div className="batch-select">
+        <label>Select Waste Batch:</label>
+
+        <select
+          value={selectedId}
+          onChange={handleBatchChange}
+        >
+          {batches.map((batch) => (
+            <option key={batch.id} value={batch.id}>
+              {batch.id}
+            </option>
+          ))}
+        </select>
       </div>
 
-      <p>Track the movement of the waste batch.</p>
+      {selectedBatch && (
+        <>
+          <div className="batch-id">
+            <strong>Waste Batch ID:</strong>{" "}
+            {selectedBatch.id}
+          </div>
 
-      <div className="tracking-stage">
-        <h3>1. Collection</h3>
+          {/* 1. Collection */}
+          <div className="tracking-stage">
+            <h3>1. Collection ✅</h3>
 
-        <p>
-          <strong>Location:</strong> Main Market
-        </p>
+            <p>
+              <strong>Location:</strong>{" "}
+              {selectedBatch.location}
+            </p>
 
-        <p>
-          <strong>Ward:</strong> 5
-        </p>
+            <p>
+              <strong>Ward:</strong>{" "}
+              {selectedBatch.ward}
+            </p>
 
-        <p>
-          <strong>Date:</strong> 14 August 2026
-        </p>
+            <p>
+              <strong>Date:</strong>{" "}
+              {selectedBatch.date}
+            </p>
 
-        <p>
-          <strong>Time:</strong> 10:30 AM
-        </p>
+            <p>
+              <strong>Time:</strong>{" "}
+              {selectedBatch.time}
+            </p>
 
-        <p>
-          <strong>Collector ID:</strong> C001
-        </p>
-      </div>
+            <p>
+              <strong>Collector ID:</strong>{" "}
+              {selectedBatch.collectorId}
+            </p>
+          </div>
 
-      <div className="tracking-stage">
-        <h3>2. Transport</h3>
+          {/* 2. Transport */}
+          <div className="tracking-stage">
+            <h3>
+              2. Transport{" "}
+              {selectedBatch.status === "In Transit" ||
+              selectedBatch.status === "Received"
+                ? "🚛"
+                : "⏳"}
+            </h3>
 
-        <p>
-          <strong>Vehicle Number:</strong> MH-12-AB-1234
-        </p>
+            <p>
+              <strong>Transport Status:</strong>{" "}
+              {selectedBatch.status === "Collected"
+                ? "Waiting for transport"
+                : selectedBatch.status === "In Transit"
+                ? "In Transit"
+                : "Completed"}
+            </p>
 
-        <p>
-          <strong>Driver ID:</strong> D001
-        </p>
+            <p>
+              <strong>Start Location:</strong>{" "}
+              {selectedBatch.location}
+            </p>
+          </div>
 
-        <p>
-          <strong>Transport Status:</strong> In Transit
-        </p>
+          {/* 3. Vehicle Change */}
+          <div className="tracking-stage">
+            <h3>
+              3. Vehicle Change{" "}
+              {selectedBatch.vehicleChange
+                ? "🔄"
+                : "⏳"}
+            </h3>
 
-        <p>
-          <strong>Start Location:</strong> Main Market
-        </p>
+            {selectedBatch.vehicleChange ? (
+              <>
+                <p>
+                  <strong>Previous Vehicle:</strong>{" "}
+                  {
+                    selectedBatch.vehicleChange
+                      .previousVehicle
+                  }
+                </p>
 
-        <p>
-          <strong>Destination:</strong> Recycling Center
-        </p>
-      </div>
+                <p>
+                  <strong>New Vehicle:</strong>{" "}
+                  {
+                    selectedBatch.vehicleChange
+                      .newVehicle
+                  }
+                </p>
 
-        <div className="tracking-stage">
-  <h3>3. Vehicle Change</h3>
+                <p>
+                  <strong>Transfer Location:</strong>{" "}
+                  {
+                    selectedBatch.vehicleChange
+                      .transferLocation
+                  }
+                </p>
 
-  <p>
-    <strong>Previous Vehicle:</strong> MH-12-AB-1234
-  </p>
+                <p>
+                  <strong>Transfer Date:</strong>{" "}
+                  {
+                    selectedBatch.vehicleChange
+                      .transferDate
+                  }
+                </p>
 
-  <p>
-    <strong>New Vehicle:</strong> MH-14-CD-5678
-  </p>
+                <p>
+                  <strong>Transfer Time:</strong>{" "}
+                  {
+                    selectedBatch.vehicleChange
+                      .transferTime
+                  }
+                </p>
+              </>
+            ) : (
+              <p>Vehicle change details not added yet.</p>
+            )}
+          </div>
 
-  <p>
-    <strong>Transfer Location:</strong> Transfer Point 1
-  </p>
+          {/* 4. Destination */}
+          <div className="tracking-stage">
+            <h3>
+              4. Destination{" "}
+              {selectedBatch.destinationDetails
+                ? "🏁"
+                : "⏳"}
+            </h3>
 
-  <p>
-    <strong>Transfer Date:</strong> 14 August 2026
-  </p>
+            {selectedBatch.destinationDetails ? (
+              <>
+                <p>
+                  <strong>Destination:</strong>{" "}
+                  {
+                    selectedBatch.destinationDetails
+                      .destination
+                  }
+                </p>
 
-  <p>
-    <strong>Transfer Time:</strong> 12:30 PM
-  </p>
-</div>
+                <p>
+                  <strong>Received By:</strong>{" "}
+                  {
+                    selectedBatch.destinationDetails
+                      .receivedBy
+                  }
+                </p>
 
-    <div className="tracking-stage">
-  <h3>4. Destination</h3>
+                <p>
+                  <strong>Received Date:</strong>{" "}
+                  {
+                    selectedBatch.destinationDetails
+                      .receivedDate
+                  }
+                </p>
 
-  <p>
-    <strong>Destination:</strong> Recycling Center
-  </p>
+                <p>
+                  <strong>Received Time:</strong>{" "}
+                  {
+                    selectedBatch.destinationDetails
+                      .receivedTime
+                  }
+                </p>
 
-  <p>
-    <strong>Received By:</strong> R001
-  </p>
-
-  <p>
-    <strong>Received Date:</strong> 14 August 2026
-  </p>
-
-  <p>
-    <strong>Received Time:</strong> 02:00 PM
-  </p>
-
-  <p>
-    <strong>Final Status:</strong> Received
-  </p>
-</div>
+                <p>
+                  <strong>Final Status:</strong>{" "}
+                  Received ✅
+                </p>
+              </>
+            ) : (
+              <p>Destination details not added yet.</p>
+            )}
+          </div>
+        </>
+      )}
     </div>
   );
 }

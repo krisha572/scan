@@ -12,214 +12,390 @@ function CreateBatch() {
     date: "",
     time: "",
     collectorId: "",
+    status: "Collected",
     remarks: "",
   });
 
+  const [createdBatch, setCreatedBatch] = useState(null);
   const [message, setMessage] = useState("");
 
   const handleChange = (e) => {
+    const { name, value } = e.target;
+
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value,
+      [name]: value,
     });
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // Pehle se saved batches lena
-    const oldBatches =
+    if (
+      !formData.batchId ||
+      !formData.wasteType ||
+      !formData.quantity ||
+      !formData.location ||
+      !formData.ward ||
+      !formData.date ||
+      !formData.time ||
+      !formData.collectorId
+    ) {
+      setMessage("Please fill all required fields!");
+      return;
+    }
+
+    const savedBatches =
       JSON.parse(localStorage.getItem("wasteBatches")) || [];
 
-    // New batch banana
+    const batchExists = savedBatches.some(
+      (batch) => batch.id === formData.batchId
+    );
+
+    if (batchExists) {
+      setMessage("This Waste Batch ID already exists!");
+      return;
+    }
+
     const newBatch = {
       id: formData.batchId,
       type: formData.wasteType,
-      quantity: formData.quantity + " kg",
+      quantity: formData.quantity,
       location: formData.location,
       ward: formData.ward,
       date: formData.date,
       time: formData.time,
       collectorId: formData.collectorId,
+      status: formData.status,
       remarks: formData.remarks,
-      status: "Collected",
     };
 
-    // New batch ko list me add karna
-    const updatedBatches = [...oldBatches, newBatch];
+    const updatedBatches = [
+      ...savedBatches,
+      newBatch,
+    ];
 
-    // LocalStorage me save karna
     localStorage.setItem(
       "wasteBatches",
       JSON.stringify(updatedBatches)
     );
 
-    console.log("Saved Batch:", newBatch);
+    setCreatedBatch(newBatch);
 
-    setMessage("Waste Batch created successfully! ✅");
+    setMessage(
+      "Waste Batch created successfully! 🎉"
+    );
+
+    setFormData({
+      batchId: "",
+      wasteType: "",
+      quantity: "",
+      location: "",
+      ward: "",
+      date: "",
+      time: "",
+      collectorId: "",
+      status: "Collected",
+      remarks: "",
+    });
   };
 
   return (
-    <div className="create-batch">
-      <h1>Create New Waste Batch</h1>
+    <div className="create-batch-page">
 
-      <p>Enter waste collection details</p>
+      <div className="create-batch-header">
+        <div>
+          <p className="page-tag">
+            WASTE MANAGEMENT
+          </p>
 
-      {message && (
-        <div className="success-message">
-          {message}
+          <h1>Create Waste Batch</h1>
+
+          <p>
+            Enter waste collection details and generate
+            a QR code to track its complete journey.
+          </p>
         </div>
-      )}
+      </div>
 
-      <form onSubmit={handleSubmit}>
+      <div className="create-batch-container">
 
-        <div className="form-group">
-          <label>Waste Batch ID</label>
+        {/* LEFT SIDE FORM */}
 
-          <input
-            type="text"
-            name="batchId"
-            placeholder="Example: WB-2026-00006"
-            value={formData.batchId}
-            onChange={handleChange}
-            required
-          />
-        </div>
+        <div className="form-section">
 
-        <div className="form-group">
-          <label>Waste Type</label>
-
-          <select
-            name="wasteType"
-            value={formData.wasteType}
-            onChange={handleChange}
-            required
-          >
-            <option value="">
-              Select Waste Type
-            </option>
-
-            <option value="Plastic">
-              Plastic
-            </option>
-
-            <option value="Non-Plastic">
-              Non-Plastic
-            </option>
-
-            <option value="Mixed">
-              Mixed
-            </option>
-          </select>
-        </div>
-
-        <div className="form-group">
-          <label>Quantity (kg)</label>
-
-          <input
-            type="number"
-            name="quantity"
-            placeholder="Enter quantity"
-            value={formData.quantity}
-            onChange={handleChange}
-            required
-          />
-        </div>
-
-        <div className="form-group">
-          <label>Collection Location</label>
-
-          <input
-            type="text"
-            name="location"
-            placeholder="Enter collection location"
-            value={formData.location}
-            onChange={handleChange}
-            required
-          />
-        </div>
-
-        <div className="form-group">
-          <label>Ward</label>
-
-          <input
-            type="text"
-            name="ward"
-            placeholder="Enter ward"
-            value={formData.ward}
-            onChange={handleChange}
-            required
-          />
-        </div>
-
-        <div className="form-group">
-          <label>Collection Date</label>
-
-          <input
-            type="date"
-            name="date"
-            value={formData.date}
-            onChange={handleChange}
-            required
-          />
-        </div>
-
-        <div className="form-group">
-          <label>Collection Time</label>
-
-          <input
-            type="time"
-            name="time"
-            value={formData.time}
-            onChange={handleChange}
-            required
-          />
-        </div>
-
-        <div className="form-group">
-          <label>Collector ID</label>
-
-          <input
-            type="text"
-            name="collectorId"
-            placeholder="Enter collector ID"
-            value={formData.collectorId}
-            onChange={handleChange}
-            required
-          />
-        </div>
-
-        <div className="form-group">
-          <label>Remarks</label>
-
-          <textarea
-            name="remarks"
-            placeholder="Enter remarks"
-            value={formData.remarks}
-            onChange={handleChange}
-          ></textarea>
-        </div>
-
-        <button type="submit">
-          Create Waste Batch
-        </button>
-
-        {formData.batchId && (
-          <div className="qr-code">
-            <h3>Waste Batch QR Code</h3>
-
-            <QRCodeCanvas
-              value={formData.batchId}
-              size={200}
-            />
+          <div className="form-heading">
+            <h2>Waste Collection Details</h2>
 
             <p>
-              Batch ID: {formData.batchId}
+              Fill in the information below to create
+              a new waste batch.
             </p>
           </div>
-        )}
 
-      </form>
+          {message && (
+            <div
+              className={
+                message.includes("successfully")
+                  ? "success-message"
+                  : "error-message"
+              }
+            >
+              {message}
+            </div>
+          )}
+
+          <form onSubmit={handleSubmit}>
+
+            {/* Batch ID */}
+
+            <div className="form-group full-width">
+              <label>Waste Batch ID *</label>
+
+              <input
+                type="text"
+                name="batchId"
+                placeholder="Example: WB-2026-00001"
+                value={formData.batchId}
+                onChange={handleChange}
+              />
+            </div>
+
+            {/* Waste Type + Quantity */}
+
+            <div className="form-row">
+
+              <div className="form-group">
+                <label>Waste Type *</label>
+
+                <select
+                  name="wasteType"
+                  value={formData.wasteType}
+                  onChange={handleChange}
+                >
+                  <option value="">
+                    Select Waste Type
+                  </option>
+
+                  <option value="Plastic">
+                    Plastic
+                  </option>
+
+                  <option value="Non-Plastic">
+                    Non-Plastic
+                  </option>
+
+                  <option value="Mixed">
+                    Mixed
+                  </option>
+                </select>
+              </div>
+
+              <div className="form-group">
+                <label>Quantity (kg) *</label>
+
+                <input
+                  type="number"
+                  name="quantity"
+                  placeholder="Enter quantity"
+                  value={formData.quantity}
+                  onChange={handleChange}
+                />
+              </div>
+
+            </div>
+
+            {/* Location */}
+
+            <div className="form-group full-width">
+              <label>Collection Location *</label>
+
+              <input
+                type="text"
+                name="location"
+                placeholder="Enter collection location"
+                value={formData.location}
+                onChange={handleChange}
+              />
+            </div>
+
+            {/* Ward */}
+
+            <div className="form-group full-width">
+              <label>Ward Number *</label>
+
+              <input
+                type="text"
+                name="ward"
+                placeholder="Enter ward number"
+                value={formData.ward}
+                onChange={handleChange}
+              />
+            </div>
+
+            {/* Date + Time */}
+
+            <div className="form-row">
+
+              <div className="form-group">
+                <label>Collection Date *</label>
+
+                <input
+                  type="date"
+                  name="date"
+                  value={formData.date}
+                  onChange={handleChange}
+                />
+              </div>
+
+              <div className="form-group">
+                <label>Collection Time *</label>
+
+                <input
+                  type="time"
+                  name="time"
+                  value={formData.time}
+                  onChange={handleChange}
+                />
+              </div>
+
+            </div>
+
+            {/* Collector + Status */}
+
+            <div className="form-row">
+
+              <div className="form-group">
+                <label>Collector ID *</label>
+
+                <input
+                  type="text"
+                  name="collectorId"
+                  placeholder="Example: C001"
+                  value={formData.collectorId}
+                  onChange={handleChange}
+                />
+              </div>
+
+              <div className="form-group">
+                <label>Initial Status</label>
+
+                <select
+                  name="status"
+                  value={formData.status}
+                  onChange={handleChange}
+                >
+                  <option value="Collected">
+                    Collected
+                  </option>
+
+                  <option value="In Transit">
+                    In Transit
+                  </option>
+
+                  <option value="Received">
+                    Received
+                  </option>
+                </select>
+              </div>
+
+            </div>
+
+            {/* Remarks */}
+
+            <div className="form-group full-width">
+              <label>
+                Remarks
+                <span> Optional</span>
+              </label>
+
+              <textarea
+                name="remarks"
+                placeholder="Enter additional notes..."
+                value={formData.remarks}
+                onChange={handleChange}
+              />
+            </div>
+
+            <button
+              type="submit"
+              className="create-btn"
+            >
+              + Create Waste Batch
+            </button>
+
+          </form>
+
+        </div>
+
+
+        {/* RIGHT SIDE QR SECTION */}
+
+        <div className="qr-section">
+
+          <div className="qr-icon">
+            📱
+          </div>
+
+          <h2>QR Tracking</h2>
+
+          <p className="qr-description">
+            After creating a waste batch, a QR code
+            will help track its complete journey.
+          </p>
+
+          <div className="qr-preview">
+
+            {createdBatch ? (
+              <>
+                <div className="generated-qr">
+                  <QRCodeCanvas
+                    value={createdBatch.id}
+                    size={190}
+                  />
+                </div>
+
+                <h3>
+                  {createdBatch.id}
+                </h3>
+
+                <p>
+                  Scan this QR code to track the
+                  waste batch.
+                </p>
+              </>
+            ) : (
+              <>
+                <div className="qr-placeholder">
+                  ▦
+                </div>
+
+                <h3>
+                  QR Code Preview
+                </h3>
+
+                <p>
+                  Create a batch to generate its
+                  QR code.
+                </p>
+              </>
+            )}
+
+          </div>
+
+          <div className="qr-info">
+            <span>✓</span>
+
+            <p>
+              Each waste batch receives a unique
+              QR identity for tracking.
+            </p>
+          </div>
+
+        </div>
+
+      </div>
+
     </div>
   );
 }

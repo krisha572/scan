@@ -1,0 +1,396 @@
+.create-batch-page {
+  min-height: 100vh;
+  padding: 25px 30px 50px;
+  background: #f5f8fb;
+  box-sizing: border-box;
+}
+
+/* HEADER */
+
+.create-header {
+  text-align: center;
+  margin-bottom: 22px;
+}
+
+.create-header span {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 3px;
+  color: #159a80;
+}
+
+.create-header h1 {
+  margin: 8px 0;
+  font-size: 30px;
+  color: #1e293b;
+}
+
+.create-header p {
+  margin: 0;
+  font-size: 14px;
+  color: #64748b;
+}
+
+/* MAIN LAYOUT */
+
+.create-batch-container {
+  width: 100%;
+  max-width: 1000px;
+
+  margin: 0 auto;
+
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 300px;
+
+  gap: 25px;
+
+  align-items: start;
+}
+
+/* FORM */
+
+.batch-form {
+  background: white;
+
+  padding: 25px;
+
+  border-radius: 20px;
+
+  box-shadow:
+    0 10px 30px
+    rgba(15, 23, 42, 0.08);
+
+  border:
+    1px solid #e2e8f0;
+
+  box-sizing: border-box;
+}
+
+.batch-form h2 {
+  margin: 0 0 5px;
+
+  font-size: 22px;
+
+  color: #1e293b;
+}
+
+.form-subtitle {
+  margin: 0 0 18px;
+
+  font-size: 13px;
+
+  color: #64748b;
+}
+
+/* SUCCESS */
+
+.success-message {
+  background: #dcfce7;
+
+  color: #15803d;
+
+  padding: 10px;
+
+  border-radius: 8px;
+
+  text-align: center;
+
+  margin-bottom: 15px;
+
+  font-size: 13px;
+
+  font-weight: 600;
+}
+
+/* FORM ROW */
+
+.form-row {
+  display: grid;
+
+  grid-template-columns: 1fr 1fr;
+
+  gap: 15px;
+}
+
+/* FORM GROUP */
+
+.form-group {
+  margin-bottom: 12px;
+}
+
+.form-group label {
+  display: block;
+
+  margin-bottom: 5px;
+
+  font-size: 12px;
+
+  font-weight: 600;
+
+  color: #334155;
+}
+
+.form-group small {
+  color: #94a3b8;
+}
+
+/* INPUT */
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  width: 100%;
+
+  box-sizing: border-box;
+
+  padding: 10px 12px;
+
+  font-size: 13px;
+
+  border:
+    1px solid #dbe3ea;
+
+  border-radius: 9px;
+
+  background: #f8fafc;
+
+  outline: none;
+
+  transition: 0.3s;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  background: white;
+
+  border-color: #159a80;
+
+  box-shadow:
+    0 0 0 3px
+    rgba(21, 154, 128, 0.1);
+}
+
+.form-group input:disabled {
+  background: #e2e8f0;
+
+  color: #64748b;
+}
+
+.form-group textarea {
+  height: 65px;
+
+  resize: none;
+}
+
+/* BUTTON */
+
+.create-btn {
+  width: 100%;
+
+  padding: 12px;
+
+  margin-top: 3px;
+
+  border: none;
+
+  border-radius: 10px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #159a80,
+      #0f766e
+    );
+
+  color: white;
+
+  font-size: 14px;
+
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition: 0.3s;
+}
+
+.create-btn:hover {
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 8px 20px
+    rgba(15, 118, 110, 0.25);
+}
+
+/* QR SECTION */
+
+.qr-section {
+  min-height: 510px;
+
+  background:
+    linear-gradient(
+      160deg,
+      #071827,
+      #073b4c
+    );
+
+  border-radius: 22px;
+
+  padding: 28px 22px;
+
+  color: white;
+
+  text-align: center;
+
+  box-sizing: border-box;
+
+  box-shadow:
+    0 15px 35px
+    rgba(7, 24, 39, 0.2);
+}
+
+.qr-icon {
+  width: 55px;
+  height: 55px;
+
+  margin: 0 auto 15px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  font-size: 24px;
+
+  border-radius: 15px;
+
+  background:
+    rgba(21, 154, 128, 0.2);
+}
+
+.qr-section h2 {
+  margin: 0 0 8px;
+
+  font-size: 22px;
+}
+
+.qr-section > p {
+  margin-bottom: 22px;
+
+  color: #cbd5e1;
+
+  font-size: 13px;
+
+  line-height: 1.6;
+}
+
+/* QR PREVIEW */
+
+.qr-preview {
+  padding: 22px 15px;
+
+  border-radius: 18px;
+
+  border:
+    1px dashed
+    rgba(255, 255, 255, 0.25);
+
+  background:
+    rgba(255, 255, 255, 0.05);
+}
+
+.qr-preview canvas {
+  background: white;
+
+  padding: 10px;
+
+  border-radius: 10px;
+}
+
+.qr-placeholder {
+  width: 70px;
+  height: 70px;
+
+  margin: auto;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  font-size: 42px;
+
+  border-radius: 15px;
+
+  background:
+    rgba(21, 154, 128, 0.18);
+}
+
+.qr-preview h3 {
+  margin: 15px 0 7px;
+
+  font-size: 17px;
+}
+
+.qr-preview p {
+  margin: 0;
+
+  color: #cbd5e1;
+
+  font-size: 12px;
+}
+
+/* QR INFO */
+
+.qr-info {
+  margin-top: 20px;
+
+  padding: 12px;
+
+  border-radius: 10px;
+
+  background:
+    rgba(255, 255, 255, 0.06);
+
+  color: #d1fae5;
+
+  font-size: 12px;
+
+  line-height: 1.5;
+}
+
+/* RESPONSIVE */
+
+@media (max-width: 1000px) {
+
+  .create-batch-container {
+    grid-template-columns: 1fr;
+
+    max-width: 700px;
+  }
+
+  .qr-section {
+    min-height: auto;
+  }
+}
+
+@media (max-width: 600px) {
+
+  .create-batch-page {
+    padding: 20px 15px;
+  }
+
+  .create-header h1 {
+    font-size: 24px;
+  }
+
+  .batch-form {
+    padding: 18px;
+  }
+
+  .form-row {
+    grid-template-columns: 1fr;
+
+    gap: 0;
+  }
+}

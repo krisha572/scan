@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import BatchList from "./BatchList";
+import "./Dashboard.css";
 
 function Dashboard() {
   const [search, setSearch] = useState("");
@@ -20,12 +21,15 @@ function Dashboard() {
   ).length;
 
   const nonPlasticWaste = batches.filter(
-    (batch) => batch.type === "Non-Plastic"
+    (batch) =>
+      batch.type === "Non-Plastic" ||
+      batch.type === "Non-plastic"
   ).length;
 
   const totalQuantity = batches.reduce(
-    (total, batch) =>
-      total + Number.parseFloat(batch.quantity) || 0,
+    (total, batch) => {
+      return total + (parseFloat(batch.quantity) || 0);
+    },
     0
   );
 
@@ -37,76 +41,189 @@ function Dashboard() {
     (batch) => batch.status === "Received"
   ).length;
 
-  const pending = batches.filter(
-    (batch) => batch.status === "Pending"
+  const collected = batches.filter(
+    (batch) => batch.status === "Collected"
   ).length;
 
   return (
     <div className="dashboard">
-      <h1>Waste Journey Tracking</h1>
 
-      <p className="subtitle">
-        QR-Based Waste Tracking Dashboard
-      </p>
+      {/* Header */}
 
-      <Link
-        to="/create-batch"
-        className="create-batch-btn"
-      >
-        + Create Waste Batch
-      </Link>
+      <div className="dashboard-header">
 
-      <div className="search-box">
-        <input
-          type="text"
-          placeholder="Search by QR Code / Waste Batch ID"
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-        />
+        <div>
+          <h1>🌿 Hello, Welcome Back!</h1>
 
-        <button>Search</button>
+          <p>
+            Track • Manage • Build a Cleaner Future
+          </p>
+        </div>
+
+        <div className="profile-section">
+          🔔
+          <div className="profile-circle">
+            K
+          </div>
+          <strong>Krisha</strong>
+        </div>
+
       </div>
+
+
+      {/* Hero Section */}
+
+      <div className="hero-section">
+
+        <div className="hero-content">
+
+          <span className="hero-tag">
+            Waste Journey Tracking
+          </span>
+
+          <h2>
+            Small Steps <br />
+            Make a Big Impact
+          </h2>
+
+          <p>
+            Track every waste batch from collection
+            to destination. Together for a cleaner planet.
+          </p>
+
+        </div>
+
+        <div className="hero-illustration">
+          ♻️ 🌳 🚛 🌱
+        </div>
+
+      </div>
+
+
+      {/* Cards */}
 
       <div className="cards">
 
-        <div className="card">
+        <div className="card green-card">
+          <div className="card-icon">📦</div>
+
           <h3>Total Waste Batches</h3>
+
           <h2>{totalBatches}</h2>
+
+          <p>↗️ Track all batches</p>
         </div>
 
-        <div className="card">
+
+        <div className="card blue-card">
+          <div className="card-icon">♻️</div>
+
           <h3>Plastic Waste</h3>
+
           <h2>{plasticWaste}</h2>
+
+          <p>Plastic batches</p>
         </div>
 
-        <div className="card">
+
+        <div className="card purple-card">
+          <div className="card-icon">🍃</div>
+
           <h3>Non-Plastic Waste</h3>
+
           <h2>{nonPlasticWaste}</h2>
+
+          <p>Eco-friendly tracking</p>
         </div>
 
-        <div className="card">
+
+        <div className="card orange-card">
+          <div className="card-icon">⚖️</div>
+
           <h3>Total Quantity</h3>
+
           <h2>{totalQuantity} kg</h2>
-        </div>
 
-        <div className="card">
-          <h3>In Transit</h3>
-          <h2>{inTransit}</h2>
-        </div>
-
-        <div className="card">
-          <h3>Received</h3>
-          <h2>{received}</h2>
-        </div>
-
-        <div className="card">
-          <h3>Pending</h3>
-          <h2>{pending}</h2>
+          <p>Total collected waste</p>
         </div>
 
       </div>
 
+
+      {/* Search */}
+
+      <div className="dashboard-actions">
+
+        <div className="search-box">
+
+          <span>🔍</span>
+
+          <input
+            type="text"
+            placeholder="Search by QR Code / Waste Batch ID"
+            value={search}
+            onChange={(e) =>
+              setSearch(e.target.value)
+            }
+          />
+
+          <button>
+            Search
+          </button>
+
+        </div>
+
+
+        <Link
+          to="/create-batch"
+          className="create-batch-btn"
+        >
+          + Create Waste Batch
+        </Link>
+
+      </div>
+
+
+      {/* Status Cards */}
+
+      <div className="status-cards">
+
+        <div className="small-status-card">
+          <span>🚛</span>
+
+          <div>
+            <p>In Transit</p>
+            <h3>{inTransit}</h3>
+          </div>
+        </div>
+
+
+        <div className="small-status-card">
+          <span>📦</span>
+
+          <div>
+            <p>Collected</p>
+            <h3>{collected}</h3>
+          </div>
+        </div>
+
+
+        <div className="small-status-card">
+          <span>🏁</span>
+
+          <div>
+            <p>Received</p>
+            <h3>{received}</h3>
+          </div>
+        </div>
+
+      </div>
+
+
+      {/* Batch Records */}
+
       <BatchList search={search} />
+
     </div>
   );
 }

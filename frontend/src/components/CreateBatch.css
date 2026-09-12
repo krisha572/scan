@@ -1,79 +1,289 @@
-.create-batch {
-  max-width: 700px;
-  margin: 40px auto;
-  padding: 30px;
-  background: white;
-  border-radius: 15px;
-  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+/* Main page */
+
+.create-batch-page {
+  min-height: 100vh;
+  padding: 30px 40px 50px;
+  background: #f5f8fb;
 }
 
-.create-batch h1 {
+/* Heading */
+
+.create-header {
   text-align: center;
-  color: #176b4d;
+  margin-bottom: 25px;
+}
+
+.create-header h1 {
+  font-size: 32px;
+  color: #1e293b;
   margin-bottom: 8px;
 }
 
-.create-batch p {
-  text-align: center;
-  color: #666;
-  margin-bottom: 30px;
+.create-header p {
+  color: #64748b;
+  font-size: 15px;
 }
 
-.form-group {
-  margin-bottom: 18px;
+/* Main form + QR layout */
+
+.create-batch-container {
+  max-width: 1050px;
+  margin: 0 auto;
+
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 330px;
+  gap: 30px;
+
+  align-items: start;
 }
+
+/* Form card */
+
+.batch-form {
+  background: white;
+  padding: 28px;
+  border-radius: 20px;
+
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+}
+
+/* Form title */
+
+.form-title {
+  font-size: 24px;
+  color: #1e293b;
+  margin-bottom: 5px;
+}
+
+.form-subtitle {
+  color: #64748b;
+  font-size: 14px;
+  margin-bottom: 22px;
+}
+
+/* Form fields */
+
+.form-group {
+  margin-bottom: 14px;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+}
+
+/* Labels */
 
 .form-group label {
   display: block;
-  margin-bottom: 7px;
+  margin-bottom: 6px;
+
+  font-size: 13px;
   font-weight: 600;
-  color: #333;
+  color: #334155;
 }
+
+/* Inputs */
 
 .form-group input,
 .form-group select,
 .form-group textarea {
   width: 100%;
-  padding: 12px;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  font-size: 15px;
   box-sizing: border-box;
+
+  padding: 11px 13px;
+
+  border: 1px solid #dbe3ea;
+  border-radius: 10px;
+
+  font-size: 14px;
+
+  outline: none;
+
+  transition: 0.3s;
 }
 
-.form-group textarea {
-  min-height: 100px;
-  resize: vertical;
-}
+/* Input focus */
 
 .form-group input:focus,
 .form-group select:focus,
 .form-group textarea:focus {
-  outline: none;
-  border-color: #176b4d;
+  border-color: #159a80;
+
+  box-shadow: 0 0 0 3px
+    rgba(21, 154, 128, 0.1);
 }
 
-.create-batch button {
+/* Textarea */
+
+.form-group textarea {
+  min-height: 75px;
+  resize: vertical;
+}
+
+/* Button */
+
+.create-btn {
   width: 100%;
+
   padding: 13px;
-  background: #176b4d;
-  color: white;
+
   border: none;
-  border-radius: 8px;
-  font-size: 16px;
-  font-weight: bold;
+  border-radius: 10px;
+
+  background: linear-gradient(
+    135deg,
+    #159a80,
+    #0f766e
+  );
+
+  color: white;
+
+  font-size: 15px;
+  font-weight: 600;
+
   cursor: pointer;
+
+  margin-top: 8px;
+
+  transition: 0.3s;
 }
 
-.create-batch button:hover {
-  background: #12543c;
+.create-btn:hover {
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 8px 20px
+    rgba(15, 118, 110, 0.25);
 }
-.success-message {
-  background: #d1fae5;
-  color: #166534;
-  padding: 12px;
-  border-radius: 8px;
+
+/* QR side card */
+
+.qr-section {
+  background:
+    linear-gradient(
+      180deg,
+      #071b2a,
+      #083b4c
+    );
+
+  border-radius: 22px;
+
+  padding: 30px 25px;
+
+  color: white;
+
   text-align: center;
-  margin-bottom: 20px;
-  font-weight: bold;
+
+  min-height: 420px;
+
+  box-sizing: border-box;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+/* QR icon */
+
+.qr-icon {
+  font-size: 32px;
+
+  width: 65px;
+  height: 65px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: rgba(21, 154, 128, 0.2);
+
+  border-radius: 18px;
+
+  margin-bottom: 18px;
+}
+
+/* QR heading */
+
+.qr-section h2 {
+  font-size: 23px;
+  margin-bottom: 10px;
+}
+
+/* QR text */
+
+.qr-section > p {
+  color: #cbd5e1;
+
+  font-size: 14px;
+
+  line-height: 1.6;
+
+  margin-bottom: 25px;
+}
+
+/* QR preview */
+
+.qr-preview {
+  width: 100%;
+
+  padding: 25px 15px;
+
+  border: 1px dashed
+    rgba(255, 255, 255, 0.25);
+
+  border-radius: 18px;
+
+  box-sizing: border-box;
+
+  background:
+    rgba(255, 255, 255, 0.04);
+}
+
+.qr-preview h3 {
+  margin-top: 15px;
+  margin-bottom: 8px;
+}
+
+.qr-preview p {
+  color: #cbd5e1;
+  font-size: 13px;
+}
+
+/* Responsive */
+
+@media (max-width: 950px) {
+
+  .create-batch-container {
+    grid-template-columns: 1fr;
+    max-width: 700px;
+  }
+
+  .qr-section {
+    min-height: 350px;
+  }
+
+}
+
+@media (max-width: 600px) {
+
+  .create-batch-page {
+    padding: 20px 15px;
+  }
+
+  .create-header h1 {
+    font-size: 25px;
+  }
+
+  .batch-form {
+    padding: 20px;
+  }
+
+  .form-row {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+
 }
